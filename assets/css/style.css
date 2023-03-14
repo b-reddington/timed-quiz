@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header {
+    width: 100%;
+    text-align: center;
+}
+
+h1 {
+    font-size: 4rem;
+}
+
+header p {
+    max-width: 33%;
+    margin-top: 15px;
+    margin-left: 33%;
+}
+
+p {
+    font-size: 1.6rem;
+}
