@@ -1,3 +1,7 @@
+:root {
+    --top-m: 25px;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -22,10 +26,27 @@ h1 {
 
 header p {
     max-width: 33%;
-    margin-top: 15px;
+    margin-top: var(--top-m);
     margin-left: 33%;
 }
 
 p {
     font-size: 1.6rem;
+}
+
+h2 {
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.quiz-card {
+    border: 1px solid black;
+    width: 50%;
+    margin-left: 25%;
+    margin-top: var(--top-m);
+}
+
+.quiz-card button {
+    display: block;
+    margin-top: 10px;
 }
