@@ -40,13 +40,35 @@ h2 {
 }
 
 .quiz-card {
-    border: 1px solid black;
-    width: 50%;
-    margin-left: 25%;
+    /* border: 1px solid black; */
+    width: 33%;
+    margin-left: 33%;
     margin-top: var(--top-m);
 }
 
 .quiz-card button {
     display: block;
     margin-top: 10px;
+    background-color: rgb(88, 47, 88);
+    color: white;
+    padding: 10px;
+    width: 15rem;
+    border: none;
+    border-radius: 5px;
+}
+
+.quiz-card button:active {
+    background-color: rgb(77, 41, 77);
+}
+
+footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    text-align: center;
+}
+
+footer a {
+    text-decoration: none;
+    color:rgb(77, 41, 77);
 }
