@@ -39,17 +39,19 @@ h2 {
     font-weight: 600;
 }
 
-.quiz-card {
+#quiz-card {
     /* border: 1px solid black; */
     width: 33%;
     margin-left: 33%;
     margin-top: var(--top-m);
 }
 
-.quiz-card button {
+#quiz-card button {
     display: block;
     margin-top: 10px;
     background-color: rgb(88, 47, 88);
+    font-size: 1.6rem;
+    font-weight: 600;
     color: white;
     padding: 10px;
     width: 15rem;
@@ -57,7 +59,7 @@ h2 {
     border-radius: 5px;
 }
 
-.quiz-card button:active {
+#quiz-card button:active {
     background-color: rgb(77, 41, 77);
 }
 
