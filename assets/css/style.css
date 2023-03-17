@@ -29,9 +29,14 @@ header p {
     margin-top: var(--top-m);
     margin-left: 33%;
 }
-
+#highscore {
+    float: left;
+    font-size: 1.6rem;
+    color: rgb(88, 47, 88);
+}
 p {
     font-size: 1.6rem;
+    text-align: center;
 }
 
 h2 {
@@ -40,7 +45,6 @@ h2 {
 }
 
 #quiz-card {
-    /* border: 1px solid black; */
     width: 33%;
     margin-left: 33%;
     margin-top: var(--top-m);
@@ -70,6 +74,16 @@ footer {
     text-align: center;
 }
 
+input[type="text"] {
+    margin-left: 35%;
+    height: 2.5rem;
+    width: 20rem;
+    text-align: center;
+}
+
+button#submit {
+    margin-left: 70%;
+}
 footer a {
     text-decoration: none;
     color:rgb(77, 41, 77);

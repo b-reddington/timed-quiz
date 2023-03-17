@@ -1,5 +1,6 @@
 let container = document.getElementById("quiz-card");
 let timerText = document.createElement("p");
+let instructionText = document.getElementById("instructions");
 container.appendChild(timerText);
 let startButton = document.createElement("button");
 let questionEl = document.createElement("h2"); // Creates an h2 to append the questions to
@@ -9,7 +10,7 @@ let timerCount = 60;
 // an array to store all the buttons
 let buttons = [];
 let finalScore;
-
+let highscoreButton = document.getElementById("highscore");
 let questions = [
     {
         question: "Commonly used data types DO NOT Include:",
@@ -46,6 +47,15 @@ function onLoad() {
     container.appendChild(startButton); // append the start button into the container element
 }
 
+// Activates functions to view high score
+highscoreButton.addEventListener("click", function () {
+    submitScore();
+    highscoreButton.remove();
+    questionEl.remove();
+    instructionText.remove();
+    hideAll();
+});
+
 function getCurrentQuestion() {
     // Grabs the necessary question from the questions object
     questionEl.textContent = questions[score].question;
@@ -66,7 +76,7 @@ function generateGame() {
 
         //If correct answer is clicked, remove previous question and answers and replace them with the next ones
         answerButton.addEventListener("click", function () {
-            if (score > 3) {
+            if (score > (questions.length - 2)) {
                 winGame();
             }
 
@@ -81,6 +91,7 @@ function generateGame() {
                 getCurrentQuestion();
                 generateGame();
             }
+            //if incorrect answer is selected, -10 seconds, push text = incorrect
             else {
                 timerCount -= 10;
                 correctText.textContent = "Incorrect!";
@@ -88,42 +99,68 @@ function generateGame() {
             }
         });
     }
-
 }
 
 function startTimer() {
     timerInterval = setInterval(function () {
         if (timerCount > 0) {
-        timerCount--;
-        timerText.textContent = timerCount;
+            timerCount--;
+            timerText.textContent = timerCount + " seconds left";
         }
         else {
             loseGame();
         }
     }, 1000);
 }
-
+// Called when the user meets requirements to win the game
 function winGame() {
-    finalScore = score + timerCount;
     clearInterval(timerInterval);
+    finalScore = score + timerCount;
     questionEl.textContent = "Congratulations, you've won! Your score is " + finalScore;
-    localStorage.setItem("Score", finalScore)
-    // Removes buttons
-    for (let i = 0; i < buttons.length; i++) {
-        buttons[i].style.display = "none";
-    }
+    hideAll();
+    submitScore();
 }
 
+// Called when the user meets requirements to lose the game
 function loseGame() {
     clearInterval(timerInterval);
     questionEl.textContent = "Uh oh! Time is up, you lose! Your score is " + score;
-    localStorage.setItem("score", score);
+    hideAll();
+    submitScore();
+}
+
+// Hides buttons, timers, and correct/incorrect text
+function hideAll() {
+    startButton.remove();
     correctText.remove();
     timerText.remove();
     // Removes buttons
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].style.display = "none";
     }
+}
+
+function submitScore() {
+    let nameField = document.createElement("input");
+    nameField.setAttribute("type", "text");
+    nameField.setAttribute("placeholder", "Input your initials");
+    let submitButton = document.createElement("button");
+    submitButton.textContent = "Submit";
+    submitButton.setAttribute("id", "submit");
+    container.appendChild(submitButton);
+    container.appendChild(nameField);
+
+    submitButton.addEventListener("click", function() {
+        let initials = nameField.value;
+        // Create a new object with the score and initials
+        let data = { score: score, initials: initials };
+        // Retrieve the existing scores array from local storage (if it exists)
+        let scores = JSON.parse(localStorage.getItem("scores")) || [];
+        // Add the new data object to the scores array
+        scores.push(data);
+        // Save the updated scores array to local storage
+        localStorage.setItem("scores", JSON.stringify(scores));
+    });
 }
 
 startButton.addEventListener("click", function startQuiz() {
