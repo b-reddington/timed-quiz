@@ -1,7 +1,9 @@
 let container = document.getElementById("quiz-card");
 let startButton = document.createElement("button");
-startButton.textContent = "Start Quiz"; // Add "Start Quiz" as the inner text of the button
-container.appendChild(startButton); // append the start button into the container element
+let questionEl = document.createElement("h2"); // Creates an h2 to append the questions to
+let correctText = document.createElement("h3");
+let answerButton = document.createElement("button");
+let score;
 let questions = [
     {
         question: "Commonly used data types DO NOT Include:",
@@ -29,53 +31,61 @@ let questions = [
         correctAnswer: "console.log"
     },
 ];
-let score = 0;
 
 
-function generateButtons(score) {
-    for (let i = 0; i < questions[0].answers.length; i++) {
-    let answerButton = document.createElement("button");
-    answerButton.textContent = questions[score].answers[i];
-    answerButton.setAttribute("type", "button");
-    answerButton.setAttribute("id", questions[score].answers[i]);
-    container.appendChild(answerButton);
-    answerButton.addEventListener("click", function() {
-        if (this.id === questions[score].correctAnswer)
-        score++;
-        console.log("score: " + score + "\ni = " + i + "\n" + answerButton.id + "\nquestions.correctAnswer = " + questions[score].correctAnswer);
-    })
-    }
-    
+/*
+On Load Function
+Present user with title of quiz
+present user with start quiz button
+*/
+function onload() {
+    score = 0;
+    startButton.textContent = "Start Quiz"; // Add "Start Quiz" as the inner text of the button
+    container.appendChild(startButton); // append the start button into the container element
 }
 
-function init() {
-    let questionEl = document.createElement("h2"); // Creates an h2 to append the questions to
-    container.appendChild(questionEl); // Appends the questionEl to the container element
+/*
+currentQuestion function
+use current score to grab the index of the question
+update questionEl with new question
+executed in button eventListener & startQuiz button
+*/
+
+function getCurrentQuestion() {
+    // Grabs the necessary question from the questions object
+    questionEl.textContent = questions[score].question;
     
-        if (score === 0) {
-        questionEl.textContent = questions[score].question;
-        generateButtons(score);
-        }
-        if (score === 1) {
-        questionEl.textContent = questions[score].question;
-        generateButtons(score);
-        }
-        if (score === 2) {
-        questionEl.textContent = questions[score].question;
-        generateButtons(score);
-        }
-        if (score === 3) {
-        questionEl.textContent = questions[score].question;
-        generateButtons(score);
-        }
-        if (score === 4) {
-        questionEl.textContent = questions[score].question;
-        generateButtons(score);
-        }
-    }
+    //Appends the targeted question to the questionEl container
+    container.appendChild(questionEl);
+}
 
 
-startButton.addEventListener("click", function () {
-    startButton.remove(); // When start button is clicked, remove the start button element
-    init();
+/*
+Button Function
+contains a for loop to iterate answers into buttons
+*/
+
+/* 
+Timer Function
+starts clock @ 60 seconds
+subtracts 1 per second
+lose 10 seconds per-incorrect answer
+*/
+
+/*
+Start Quiz Button - clicked
+hides start quiz button
+Contains function to generate current question
+Contains function to generate 4 button choices
+starts timer of 60 seconds
+*/
+startButton.addEventListener("click", function startQuiz() {
+    startButton.remove(); // removes start button when quiz begins
+    getCurrentQuestion();
+    // add current question
+    // add answer choices
+    // add timerStart
 });
+
+// Call Functions
+onload();
