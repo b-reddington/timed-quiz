@@ -1,9 +1,13 @@
 let container = document.getElementById("quiz-card");
+let timerText = document.createElement("p");
+container.appendChild(timerText);
 let startButton = document.createElement("button");
 let questionEl = document.createElement("h2"); // Creates an h2 to append the questions to
 let correctText = document.createElement("h3");
-let answerButton = document.createElement("button");
 let score;
+let timerCount = 3;
+// an array to store all the buttons
+let buttons = [];
 let questions = [
     {
         question: "Commonly used data types DO NOT Include:",
@@ -31,61 +35,79 @@ let questions = [
         correctAnswer: "console.log"
     },
 ];
+//What I want to appear on the screen when you first load the website
+onLoad();
 
-
-/*
-On Load Function
-Present user with title of quiz
-present user with start quiz button
-*/
-function onload() {
+function onLoad() {
     score = 0;
     startButton.textContent = "Start Quiz"; // Add "Start Quiz" as the inner text of the button
     container.appendChild(startButton); // append the start button into the container element
 }
 
-/*
-currentQuestion function
-use current score to grab the index of the question
-update questionEl with new question
-executed in button eventListener & startQuiz button
-*/
-
 function getCurrentQuestion() {
     // Grabs the necessary question from the questions object
     questionEl.textContent = questions[score].question;
-    
-    //Appends the targeted question to the questionEl container
+
+    //Appends the targeted question to the container element
     container.appendChild(questionEl);
 }
 
+function generateGame() {
+    // this loop generates the same amount of buttons that there are of answers
+    for (let i = 0; i < questions[score].answers.length; i++) {
+        let answerButton = document.createElement("button");
+        answerButton.textContent = questions[score].answers[i];
+        container.appendChild(answerButton);
 
-/*
-Button Function
-contains a for loop to iterate answers into buttons
-*/
+        // add each button to the array
+        buttons.push(answerButton);
 
-/* 
-Timer Function
-starts clock @ 60 seconds
-subtracts 1 per second
-lose 10 seconds per-incorrect answer
-*/
+        //If correct answer is clicked, remove previous question and answers and replace them with the next ones
+        answerButton.addEventListener("click", function () {
+            if (answerButton.textContent === questions[score].correctAnswer) {
+                score++;
+                for (let i = 0; i < buttons.length; i++) {
+                    buttons[i].remove();
+                }
+                timerCount += 5;
+                container.appendChild(correctText);
+                correctText.textContent = "Correct! +5 seconds";
+                getCurrentQuestion();
+                generateGame();
+            }
+            else {
+                timerCount -= 10;
+            }
+        });
+    }
 
-/*
-Start Quiz Button - clicked
-hides start quiz button
-Contains function to generate current question
-Contains function to generate 4 button choices
-starts timer of 60 seconds
-*/
+}
+
+function startTimer() {
+    timerInterval = setInterval(function () {
+        if (timerCount > 0) {
+        timerCount--;
+        timerText.textContent = timerCount;
+        }
+        else {
+            loseGame();
+        }
+    }, 1000);
+}
+
+function loseGame() {
+    clearInterval(timerInterval);
+    questionEl.textContent = "Uh oh! Time is up, you lose!";
+    timerText.remove();
+    // Removes buttons
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].style.display = "none";
+    }
+}
+
 startButton.addEventListener("click", function startQuiz() {
     startButton.remove(); // removes start button when quiz begins
     getCurrentQuestion();
-    // add current question
-    // add answer choices
-    // add timerStart
+    generateGame();
+    startTimer();
 });
-
-// Call Functions
-onload();
