@@ -5,9 +5,11 @@ let startButton = document.createElement("button");
 let questionEl = document.createElement("h2"); // Creates an h2 to append the questions to
 let correctText = document.createElement("h3");
 let score;
-let timerCount = 3;
+let timerCount = 60;
 // an array to store all the buttons
 let buttons = [];
+let finalScore;
+
 let questions = [
     {
         question: "Commonly used data types DO NOT Include:",
@@ -64,6 +66,10 @@ function generateGame() {
 
         //If correct answer is clicked, remove previous question and answers and replace them with the next ones
         answerButton.addEventListener("click", function () {
+            if (score > 3) {
+                winGame();
+            }
+
             if (answerButton.textContent === questions[score].correctAnswer) {
                 score++;
                 for (let i = 0; i < buttons.length; i++) {
@@ -71,12 +77,14 @@ function generateGame() {
                 }
                 timerCount += 5;
                 container.appendChild(correctText);
-                correctText.textContent = "Correct! +5 seconds";
+                correctText.textContent = "";
                 getCurrentQuestion();
                 generateGame();
             }
             else {
                 timerCount -= 10;
+                correctText.textContent = "Incorrect!";
+                container.appendChild(correctText);
             }
         });
     }
@@ -95,9 +103,22 @@ function startTimer() {
     }, 1000);
 }
 
+function winGame() {
+    finalScore = score + timerCount;
+    clearInterval(timerInterval);
+    questionEl.textContent = "Congratulations, you've won! Your score is " + finalScore;
+    localStorage.setItem("Score", finalScore)
+    // Removes buttons
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].style.display = "none";
+    }
+}
+
 function loseGame() {
     clearInterval(timerInterval);
-    questionEl.textContent = "Uh oh! Time is up, you lose!";
+    questionEl.textContent = "Uh oh! Time is up, you lose! Your score is " + score;
+    localStorage.setItem("score", score);
+    correctText.remove();
     timerText.remove();
     // Removes buttons
     for (let i = 0; i < buttons.length; i++) {
