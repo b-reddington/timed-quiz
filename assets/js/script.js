@@ -43,13 +43,37 @@ onLoad();
 
 function onLoad() {
     score = 0;
+    timerCount = 60;
+    questionEl.remove();
+    container.appendChild(instructionText);
     startButton.textContent = "Start Quiz"; // Add "Start Quiz" as the inner text of the button
     container.appendChild(startButton); // append the start button into the container element
 }
-
+function displayScores() {
+    let scores = JSON.parse(localStorage.getItem("scores")) || [];
+    scores.sort(function (a, b) {
+        return b.score - a.score;
+    });
+    let scoreBoard = document.createElement("ul");
+    for (let i = 0; i < scores.length; i++) {
+        let userScore = document.createElement("li");
+        userScore.textContent = scores[i].initials + " highest score is " + scores[i].score;
+        scoreBoard.appendChild(userScore);
+    }
+    container.appendChild(scoreBoard);
+    let backButton = document.createElement("button");
+    backButton.textContent = "Back";
+    scoreBoard.appendChild(backButton);
+    backButton.addEventListener("click", function () {
+        onLoad();
+        scoreBoard.remove();
+        backButton.remove();
+        container.appendChild(highscoreButton);
+    });
+}
 // Activates functions to view high score
 highscoreButton.addEventListener("click", function () {
-    submitScore();
+    displayScores();
     highscoreButton.remove();
     questionEl.remove();
     instructionText.remove();
@@ -144,22 +168,27 @@ function submitScore() {
     let nameField = document.createElement("input");
     nameField.setAttribute("type", "text");
     nameField.setAttribute("placeholder", "Input your initials");
+    container.appendChild(nameField);
     let submitButton = document.createElement("button");
     submitButton.textContent = "Submit";
     submitButton.setAttribute("id", "submit");
     container.appendChild(submitButton);
-    container.appendChild(nameField);
 
-    submitButton.addEventListener("click", function() {
+    submitButton.addEventListener("click", function () {
         let initials = nameField.value;
         // Create a new object with the score and initials
         let data = { score: score, initials: initials };
-        // Retrieve the existing scores array from local storage (if it exists)
+        // Retrieve the existing scores array from local storage
         let scores = JSON.parse(localStorage.getItem("scores")) || [];
         // Add the new data object to the scores array
         scores.push(data);
         // Save the updated scores array to local storage
         localStorage.setItem("scores", JSON.stringify(scores));
+        submitButton.remove();
+        nameField.remove();
+        onLoad();
+        container.appendChild(highscoreButton);
+
     });
 }
 
@@ -168,4 +197,5 @@ startButton.addEventListener("click", function startQuiz() {
     getCurrentQuestion();
     generateGame();
     startTimer();
+    highscoreButton.remove();
 });

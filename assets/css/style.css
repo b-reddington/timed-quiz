@@ -82,9 +82,22 @@ input[type="text"] {
 }
 
 button#submit {
-    margin-left: 70%;
+    display: block;
+    margin-left: 39%;
 }
 footer a {
     text-decoration: none;
     color:rgb(77, 41, 77);
+}
+ul li {
+    list-style: none;
+    font-size: 1.6rem;
+    text-align: center;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+ul li:nth-of-type(odd) {
+    background-color: rgb(46, 46, 46);
+    color: white;
 }
