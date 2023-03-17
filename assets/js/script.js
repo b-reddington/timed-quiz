@@ -142,7 +142,7 @@ function winGame() {
     finalScore = score + timerCount;
     questionEl.textContent = "Congratulations, you've won! Your score is " + finalScore;
     hideAll();
-    submitScore();
+    submitScore(finalScore);
 }
 
 // Called when the user meets requirements to lose the game
@@ -150,7 +150,7 @@ function loseGame() {
     clearInterval(timerInterval);
     questionEl.textContent = "Uh oh! Time is up, you lose! Your score is " + score;
     hideAll();
-    submitScore();
+    submitScore(score);
 }
 
 // Hides buttons, timers, and correct/incorrect text
@@ -164,7 +164,7 @@ function hideAll() {
     }
 }
 
-function submitScore() {
+function submitScore(finalScore) {
     let nameField = document.createElement("input");
     nameField.setAttribute("type", "text");
     nameField.setAttribute("placeholder", "Input your initials");
@@ -177,7 +177,7 @@ function submitScore() {
     submitButton.addEventListener("click", function () {
         let initials = nameField.value;
         // Create a new object with the score and initials
-        let data = { score: score, initials: initials };
+        let data = { score: finalScore, initials: initials };
         // Retrieve the existing scores array from local storage
         let scores = JSON.parse(localStorage.getItem("scores")) || [];
         // Add the new data object to the scores array
